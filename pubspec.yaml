@@ -1,0 +1,24 @@
+name: team_system_app
+description: Team Communication System App for PC and Mobile
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.1.0
+  socket_io_client: ^2.0.3+1
+  encrypt: ^5.0.1
+  shared_preferences: ^2.2.1
+  provider: ^6.0.5
+  intl: ^0.18.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
