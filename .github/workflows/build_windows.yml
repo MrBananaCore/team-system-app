@@ -1,7 +1,7 @@
 name: Build Windows EXE
 
 on:
-  workflow_dispatch: # Nur manueller Start für maximale Kontrolle
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,23 +16,27 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable' # Nutzt immer die aktuellste stabile Version
+          channel: 'stable'
 
-      - name: Install Dependencies
+      - name: Initialize Windows Project
         run: |
           flutter config --enable-windows-desktop
+          flutter create --platforms=windows .
           flutter pub get
 
       - name: Build App
         run: flutter build windows --release
 
-      - name: Zip and Release
+      - name: Zip Release
+        shell: powershell
+        run: Compress-Archive -Path build\windows\runner\Release\* -DestinationPath team-system-windows.zip
+
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         if: success()
         with:
-          files: build/windows/runner/Release/*
+          files: team-system-windows.zip
           tag_name: v1.0.${{ github.run_number }}
           name: Release v1.0.${{ github.run_number }}
-          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
